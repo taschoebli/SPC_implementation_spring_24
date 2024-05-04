@@ -54,22 +54,21 @@ def decode(pk_decode, sk_decode):
     # Multiply by p/q
     scaled_product = (p / q) * product
 
-    # Apply ceiling function element-wise, see lemma 5
-    ceiled_result = np.floor(scaled_product)
+    # Apply round function element-wise, see lemma 5
+    rounded_result = np.round(scaled_product)
 
-    # Apply modulo q to each element of the ceiled result
-    final_result = np.mod(ceiled_result, q)
+    # Apply modulo q to each element of the rounded result
+    final_result = np.mod(rounded_result, q)
 
     return final_result
 
 
 # Parameters
 n = 128  # Dimension of vectors
-m = 4*n  # see section 3.2
-k = 3*n  # see section 3.2
-q = 2**15
-p = 2**14
-error_rate = 3.2  # Standard deviation for error in LWE
+k = 3*n    # see section 3.2 + 3.5
+m = 4*n  # see section 3.2 + 3.5
+q = 3329
+p = 15   # field doing inner products over
 
 # Data
 data_embeddings = np.load('LFW_embeddings.npy')
