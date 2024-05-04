@@ -69,6 +69,7 @@ k = 3*n    # see section 3.2 + 3.5
 m = 4*n  # see section 3.2 + 3.5
 q = 3329
 p = 15   # field doing inner products over
+e = 5    # error rate (|e|+1)*(p/q) = negligible -> m*B^2*p/q < 2^-40
 
 # Data
 data_embeddings = np.load('LFW_embeddings.npy')
