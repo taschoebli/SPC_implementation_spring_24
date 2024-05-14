@@ -1,12 +1,17 @@
 import numpy as np
 
+'''
+Copyright Luzi Schöb, May 2024
+This code is an implementation trial of learning with errors (LWE) protocol used in preserving biometric 
+identification applications. For the protocol explanation, please refer to the word document.
+'''
+
 
 def setup(low, row, col):
     return np.random.randint(low, size=(row, col))
 
 
 def encode(u, b):
-
     if b == 0:
         rb = setup(q, m, (m - k))  # see section 2.1, dimension is m x (m-k)
         # Compute H.T * r0
@@ -65,18 +70,18 @@ def decode(pk_decode, sk_decode):
 
 # Parameters
 n = 128  # Dimension of vectors
-k = 3*n    # see section 3.2 + 3.5
-m = 4*n  # see section 3.2 + 3.5
-q = 3329
-p = 15   # field doing inner products over
-e = 5    # error rate (|e|+1)*(p/q) = negligible -> m*B^2*p/q < 2^-40
+k = 3 * n  # see section 3.2 + 3.5
+m = 4 * n  # see section 3.2 + 3.5
+q = 7793  # some large enough prime
+p = 3329  # field doing inner products over
+e = 5  # error rate (|e|+1)*(p/q) = negligible -> m*B^2*p/q < 2^-40
 
 # Data
 data_embeddings = np.load('LFW_embeddings.npy')
 data_labels = np.load('LFW_labels.npy')
 
 # Setup phase
-H = setup(q, m, (k+n))  # Generator matrix
+H = setup(q, m, (k + n))  # Generator matrix
 
 # Get two values, Colin Powell at indices 0 and 133
 x = data_embeddings[:1]
@@ -100,10 +105,9 @@ sum_z_z_prime = z + z_prime
 print(f"Product x.T * y: {product_x_y}")
 print(f"Sum z + z': {sum_z_z_prime}")
 
-
 # Variant 2 Validation of correctness according to page 9
 left_side = np.dot(pk_x_0.T, sk_y_1) + np.dot(pk_y_1.T, sk_x_0)
-temp_a = ((q/p) * np.dot(x.T, y))
+temp_a = ((q / p) * np.dot(x.T, y))
 
 r0 = setup(q, m, (m - k))  # see section 2.1, dimension is m x (m-k)
 r1 = setup(q, m, (m - k))  # see section 2.1, dimension is m x (m-k)
@@ -112,6 +116,3 @@ right_side = temp_a + temp_b
 delta = left_side - right_side
 delta_abs = np.abs(delta)
 print(f"Delta Error: {delta_abs}")
-
-# Page 17 in second paper, Hamming Distance for transformation of vector
-# Ask Florias why, Hamming Distance gives the number of different values in two vectors. Here it would be 128 because the values are floating poing.
