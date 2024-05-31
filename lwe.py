@@ -3,7 +3,7 @@ import numpy as np
 '''
 Copyright Luzi Schöb, May 2024
 This code is an implementation trial of learning with errors (LWE) protocol used in preserving biometric 
-identification applications. For the protocol explanation, please refer to the word document.
+identification applications. For the protocol explanation, please refer to the word document: inner_products_paper_SPC_Schoeb.docx.
 '''
 
 
